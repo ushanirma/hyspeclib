@@ -11,7 +11,6 @@ import pandas as pd
 
 
 class pca_analysis:
-    
     def __init__(self, image_directory_path=None, save_dir = None ):
         """
 
@@ -19,7 +18,7 @@ class pca_analysis:
         :param save_dir: Path where PCA statistics should be saved
         """
         
-        if image_directory_path!=None:
+        if image_directory_path:
             self._image_directory_path = image_directory_path
             self._processed_images = glob.glob(image_directory_path+'**/**.hdr',recursive=True)
             self._total_images = len(self._processed_images)
@@ -33,14 +32,11 @@ class pca_analysis:
         :return: number of bands and PCA statistics
         """
         
-        t1 = time.time()
         print("Fetching file : "+ image_path)
-        img = open_image(image_path)
-        
+        t1 = time.time()
+        img = open_image(image_path)  # open image using spectral
         nbands = img.nbands
-
         pc = principal_components(img)
-
         t2 = time.time() - t1
         print('\nTook {:.4f} seconds / {:.4f} min to run.\n'.format(t2,t2/60))    
         return nbands, pc  
@@ -61,7 +57,7 @@ class pca_analysis:
 
 
         with open(self._save_dir+image_name+'_pca.csv', mode='w') as file:
-            
+        # TODO: use built in csv module to generate csv files            
             for pc_number in range(nbands):
                 
                 file.write( str(pc_number+1))
@@ -72,7 +68,7 @@ class pca_analysis:
 
         t2 = time.time() - t1
         print('Writing to disk complete... took {} seconds'.format(t2))
-        
+
     def perform(self):
         """
         Performs PCA on list of processed images one by one
@@ -307,9 +303,7 @@ class pca_analysis:
                 frequent_bands.append(band)
         
         return frequent_bands
-    
-    
 
-        
-        
-
+if __name__ == "__main__":
+    pca_obj = pca_analysis(image_directory_path=r"D:\data", save_dir="results")
+    pca_obj.perform()
