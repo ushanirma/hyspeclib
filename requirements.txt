@@ -1,0 +1,8 @@
+tensorflow
+matplotlib
+pandas
+sklearn
+psutil
+scipy
+jupyterlab
+spectral
